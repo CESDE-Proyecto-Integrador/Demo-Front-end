@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentoPro - Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f6f6f8; }
+        .sidebar { width: 260px; min-height: 100vh; }
+        .material-symbols-outlined { vertical-align: middle; font-size: 1.25rem; }
+        .nav-link.text-dark:hover { background-color: #f8f9fa; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .chart-bar { background-color: #dee2e6; border-radius: 4px 4px 0 0; position: relative; width: 100%; transition: background-color 0.3s; }
+        .chart-bar:hover { background-color: #0d6efd; opacity: 0.8; }
+        .chart-bar.active { background-color: #0d6efd; }
+    </style>
+</head>
+<body>
+<div class="d-flex vh-100 overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar bg-white border-end d-flex flex-column flex-shrink-0 z-3">
+        <div class="p-4 d-flex align-items-center gap-3">
+            <div class="bg-primary rounded p-2 d-flex align-items-center justify-content-center text-white">
+                <span class="material-symbols-outlined">diversity_3</span>
+            </div>
+            <div>
+                <h1 class="h6 mb-0 fw-bold">TalentoPro</h1>
+                <p class="text-muted small mb-0">Gestión Humana</p>
+            </div>
+        </div>
+        
+        <div class="px-3 flex-grow-1 overflow-auto">
+            <ul class="nav nav-pills flex-column gap-1">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="vacantes.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">work</span>
+                        Vacantes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="aspirantes.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">groups</span>
+                        Aspirantes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pipeline.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">account_tree</span>
+                        Procesos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="entrevistas.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">calendar_today</span>
+                        Entrevistas
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="p-3 border-top">
+            <ul class="nav nav-pills flex-column gap-1 mb-3">
+                <li class="nav-item">
+                    <a href="perfil.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">person</span>
+                        Perfil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ajustes.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">settings</span>
+                        Ajustes
+                    </a>
+                </li>
+            </ul>
+            <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2 px-3 py-2">
+                <span class="material-symbols-outlined fs-6">add_circle</span>
+                Nueva Vacante
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 d-flex flex-column overflow-hidden">
+        <!-- Header -->
+        <header class="navbar bg-white border-bottom px-4 py-3 sticky-top">
+            <h2 class="h5 mb-0 fw-bold">Dashboard de Reclutamiento</h2>
+            <div class="d-flex align-items-center gap-3">
+                <form class="position-relative d-none d-sm-block" action="aspirantes.html">
+                    <span class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="font-size: 1.1rem;">search</span>
+                    <input class="form-control rounded-pill ps-5 bg-light border-0" type="search" placeholder="Buscar aspirantes..." style="width: 250px;">
+                    <button type="submit" class="d-none">Buscar</button>
+                </form>
+                
+                <div class="dropdown">
+                    <button class="btn btn-light rounded-circle position-relative p-2 d-flex align-items-center justify-content-center text-muted" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 8px; margin-left: -8px;"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="width: 300px;">
+                        <li><h6 class="dropdown-header fw-bold">Notificaciones Recientes</h6></li>
+                        <li><a class="dropdown-item d-flex gap-2 py-2" href="aspirantes.html">
+                            <span class="material-symbols-outlined text-primary fs-5">person_add</span>
+                            <div>
+                                <p class="mb-0 fw-semibold small">Nuevo aspirante registrado</p>
+                                <p class="mb-0 text-muted" style="font-size: 0.70rem;">Hace 5 min</p>
+                            </div>
+                        </a></li>
+                        <li><a class="dropdown-item d-flex gap-2 py-2" href="entrevistas.html">
+                            <span class="material-symbols-outlined text-warning fs-5">event</span>
+                            <div>
+                                <p class="mb-0 fw-semibold small">Recordatorio de entrevista</p>
+                                <p class="mb-0 text-muted" style="font-size: 0.70rem;">En 1 Hora</p>
+                            </div>
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-center text-primary fw-medium small" href="#">Ver todas</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown ms-1">
+                    <div class="d-flex align-items-center gap-2 ps-3 border-start" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="text-end d-none d-sm-block">
+                            <p class="mb-0 fw-bold text-dark" style="font-size: 0.875rem;">Carlos Méndez</p>
+                            <p class="mb-0 text-muted" style="font-size: 0.75rem;">Admin RH</p>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuACR9INX0WzokTk36WAQdwdxknAyfz8SzZDz4BYUDfq3r3B-hJv3YQxKkxYIpY8oymb_MTOC0LCtJmJOjgvlwI2Sf8l4bWD3T4bV55l5sJzZmsnhGecyILSbNxMdza1xVEvs2GJ3e94CMdK3fuVdMwPa2YSWcztIWwg4CdJPFzCrmPn-mcH-58RCsqBkGcLkzFUnHC0VzFHRfDVWf_07Lvr_QWU0z-S5uKW0pjTrFv12H3Ylmdio7OIZ_Sgyiq9aZqH5aayDr2bxc8" class="avatar bg-light border border-2 border-white shadow-sm">
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3">
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="perfil.html"><span class="material-symbols-outlined fs-6 text-muted">person</span> Mi Perfil</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="ajustes.html"><span class="material-symbols-outlined fs-6 text-muted">settings</span> Ajustes</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="flex-grow-1 overflow-auto p-4 p-md-5">
+            <!-- Summary Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 h-100 rounded-4 p-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="px-2 py-2 bg-success bg-opacity-10 text-success rounded">
+                                    <span class="material-symbols-outlined">assignment</span>
+                                </div>
+                                <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1">+2 este mes</span>
+                            </div>
+                            <h6 class="text-muted fw-normal mb-1">Vacantes Abiertas</h6>
+                            <h3 class="fw-bold mb-0">12</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 h-100 rounded-4 p-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="px-2 py-2 bg-primary bg-opacity-10 text-primary rounded">
+                                    <span class="material-symbols-outlined">person_search</span>
+                                </div>
+                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2 py-1">+15%</span>
+                            </div>
+                            <h6 class="text-muted fw-normal mb-1">Aspirantes en Proceso</h6>
+                            <h3 class="fw-bold mb-0">45</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 h-100 rounded-4 p-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="px-2 py-2 bg-info bg-opacity-10 text-info rounded">
+                                    <span class="material-symbols-outlined">event_available</span>
+                                </div>
+                                <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-2 py-1">Hoy</span>
+                            </div>
+                            <h6 class="text-muted fw-normal mb-1">Entrevistas para Hoy</h6>
+                            <h3 class="fw-bold mb-0">5</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Graph Placeholder -->
+                <div class="col-lg-8">
+                    <div class="card shadow-sm border-0 h-100 rounded-4 p-3">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h5 class="fw-bold mb-0">Aspirantes por Mes</h5>
+                                <select class="form-select form-select-sm w-auto bg-light border-0">
+                                    <option>Últimos 6 meses</option>
+                                    <option>Año actual</option>
+                                </select>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-between gap-2 px-2" style="height: 200px;">
+                                <div class="w-100 d-flex flex-column align-items-center gap-2 h-100 justify-content-end">
+                                    <div class="w-100 bg-light rounded-top text-center transition-all chart-bar" style="height: 40%;"></div>
+                                    <span class="small text-muted">Ene</span>
+                                </div>
+                                <div class="w-100 d-flex flex-column align-items-center gap-2 h-100 justify-content-end">
+                                    <div class="w-100 bg-light rounded-top text-center transition-all chart-bar" style="height: 65%;"></div>
+                                    <span class="small text-muted">Feb</span>
+                                </div>
+                                <div class="w-100 d-flex flex-column align-items-center gap-2 h-100 justify-content-end">
+                                    <div class="w-100 bg-primary rounded-top text-center transition-all chart-bar active" style="height: 90%;"></div>
+                                    <span class="small text-muted fw-bold">Mar</span>
+                                </div>
+                                <div class="w-100 d-flex flex-column align-items-center gap-2 h-100 justify-content-end">
+                                    <div class="w-100 bg-light rounded-top text-center transition-all chart-bar" style="height: 55%;"></div>
+                                    <span class="small text-muted">Abr</span>
+                                </div>
+                                <div class="w-100 d-flex flex-column align-items-center gap-2 h-100 justify-content-end">
+                                    <div class="w-100 bg-light rounded-top text-center transition-all chart-bar" style="height: 75%;"></div>
+                                    <span class="small text-muted">May</span>
+                                </div>
+                                <div class="w-100 d-flex flex-column align-items-center gap-2 h-100 justify-content-end">
+                                    <div class="w-100 bg-light rounded-top text-center transition-all chart-bar" style="height: 85%;"></div>
+                                    <span class="small text-muted">Jun</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="col-lg-4">
+                    <div class="card shadow-sm border-0 h-100 rounded-4 p-3">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-4">Actividad Reciente</h5>
+                            <div class="d-flex flex-column gap-4 mb-4">
+                                <div class="d-flex gap-3">
+                                    <div class="position-relative">
+                                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFXbfjr7lVhmNh1ny-2RBBSVX8nDiN1OfqBc3cbvvmQZ-2BpHkdsXp1vLv3JnyvUiwNUyYhm6xQdfKeqcLvFMcnAHv_wbr6jj_BtBSKGUeAvHPii5GssvT5HmEhauCsGV6XfGlRWBuRPxjG9n5jl97U20OavE_6iHLmLPHn-avmME5yIDt7AXgYN2qk-mjVuy-CDdCOvBwsevLuUf79fle2J61YwUSciTqL_BMe2a7dr6NQEXAefAXYJeaYQaOJpbbBW1etObtTAI" class="avatar border border-2 border-primary border-opacity-25">
+                                        <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle d-flex" style="width: 14px; height: 14px;"></span>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-semibold text-dark fs-6">Ana García</p>
+                                        <p class="mb-0 text-muted small">Aplicó a <span class="text-primary fw-medium">UI Designer</span></p>
+                                        <p class="mb-0 text-muted" style="font-size: 0.65rem; text-transform: uppercase;">Hace 15 min</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-3">
+                                    <div class="position-relative">
+                                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbwvWKc5tbHLs1Ods7dySxOJWy8xmBW0M5zX1JnTi8pvr3VqcYuX4FJMIdvIlKVUnAkkuoy0S7suVosm07f3Dn15F9st20qCfzg7HXZTt07zD2XLOpy6xHWHZbyqqlFPEx-Eda1uznvWswwI5Xpsq5jOxRDN0PcwhnOqRh2buP5Ryzc_lNN0bwtDCLwV8TCygaDiYf3xW2J0emOo4WryaAckUHKBzdsaJ1ukEGDvt10xMSdy8fpaPMOsWEjCxiEofj35lQHAyh-W8" class="avatar border border-2 border-info border-opacity-25">
+                                        <span class="position-absolute bottom-0 end-0 bg-white border border-light rounded-circle d-flex align-items-center justify-content-center" style="width: 18px; height: 18px;">
+                                            <span class="material-symbols-outlined text-info" style="font-size: 12px;">video_call</span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-semibold text-dark fs-6">Luis Martínez</p>
+                                        <p class="mb-0 text-muted small">Entrevista agendada</p>
+                                        <p class="mb-0 text-muted" style="font-size: 0.65rem; text-transform: uppercase;">Hace 1 hora</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-3">
+                                    <div class="position-relative">
+                                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD26L4nvMK-Wa-WZSKkKuAqJVk3Y-SbDozywd6FkVZ4pf6eSrA1BC2ccIpwmDqNtNgn3ZFLWF-SAdhPXAPBR0JcIIdH_GsA7Nl4iYFjs1IVvtjX2jvNjSLw0zkibKvqPUYYrvQXAKIrU_G3ySibF0kyu0YTsivyDjiOm2G0XPBPi_AOTtRqn0IO6umIceThXwreDD_-G-8GdKGgO0Sq7pewviMud2s8fJPd8cICrsoxTGoW2jswvCyj4zjv9XiOxnwuclDzDslbdqM" class="avatar border border-2 border-warning border-opacity-25">
+                                        <span class="position-absolute bottom-0 end-0 bg-white border border-light rounded-circle d-flex align-items-center justify-content-center" style="width: 18px; height: 18px;">
+                                            <span class="material-symbols-outlined text-warning" style="font-size: 12px;">pending</span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-semibold text-dark fs-6">Kevin Smith</p>
+                                        <p class="mb-0 text-muted small">Prueba técnica enviada</p>
+                                        <p class="mb-0 text-muted" style="font-size: 0.65rem; text-transform: uppercase;">Hace 3 horas</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-primary w-100 fw-semibold py-2">Ver todo el registro</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-5 pt-4 border-top d-flex flex-column flex-md-row align-items-center justify-content-end text-muted small">
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-muted text-decoration-none hover-primary">Soporte</a>
+                    <a href="#" class="text-muted text-decoration-none hover-primary">Privacidad</a>
+                    <a href="#" class="text-muted text-decoration-none hover-primary">Ayuda</a>
+                </div>
+            </footer>
+        </div>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
