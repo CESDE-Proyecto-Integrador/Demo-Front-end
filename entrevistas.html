@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentoPro - Agenda de Entrevistas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f6f6f8; }
+        .sidebar { width: 260px; min-height: 100vh; }
+        .material-symbols-outlined { vertical-align: middle; font-size: 1.25rem; }
+        .nav-link.text-dark:hover { background-color: #f8f9fa; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.25rem; text-align: center; }
+        .calendar-day { padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.875rem; }
+        .calendar-day:hover:not(.bg-primary) { background-color: #e9ecef; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .avatar-sm { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+    </style>
+</head>
+<body>
+<div class="d-flex vh-100 overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="sidebar bg-white border-end d-flex flex-column flex-shrink-0 z-3">
+        <div class="p-4 d-flex align-items-center gap-3">
+            <div class="bg-primary rounded p-2 d-flex align-items-center justify-content-center text-white">
+                <span class="material-symbols-outlined">diversity_3</span>
+            </div>
+            <div>
+                <h1 class="h6 mb-0 fw-bold">TalentoPro</h1>
+                <p class="text-muted small mb-0">Gestión Humana</p>
+            </div>
+        </div>
+        
+        <div class="px-3 flex-grow-1 overflow-auto">
+            <ul class="nav nav-pills flex-column gap-1">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="vacantes.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">work</span>
+                        Vacantes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="aspirantes.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">groups</span>
+                        Aspirantes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pipeline.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">account_tree</span>
+                        Procesos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="entrevistas.html" class="nav-link active d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">calendar_today</span>
+                        Entrevistas
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="p-3 border-top">
+            <ul class="nav nav-pills flex-column gap-1 mb-3">
+                <li class="nav-item">
+                    <a href="perfil.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">person</span>
+                        Perfil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="ajustes.html" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">settings</span>
+                        Ajustes
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 d-flex flex-column overflow-hidden">
+        <!-- Header -->
+        <header class="navbar bg-white border-bottom px-4 py-3 sticky-top flex-md-nowrap">
+            <h2 class="h5 mb-0 fw-bold">Agenda de Entrevistas</h2>
+            <div class="d-flex align-items-center gap-3 ms-auto">
+                <form class="position-relative d-none d-sm-block" action="aspirantes.html">
+                    <span class="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="font-size: 1.1rem;">search</span>
+                    <input class="form-control rounded-pill ps-5 bg-light border-0" type="search" placeholder="Buscar citas..." style="width: 250px;">
+                    <button type="submit" class="d-none">Buscar</button>
+                </form>
+
+                <div class="dropdown">
+                    <button class="btn btn-light rounded-circle position-relative p-2 d-flex align-items-center justify-content-center text-muted" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 8px; margin-left: -8px;"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="width: 300px;">
+                        <li><h6 class="dropdown-header fw-bold">Notificaciones Recientes</h6></li>
+                        <li><a class="dropdown-item d-flex gap-2 py-2" href="aspirantes.html">
+                            <span class="material-symbols-outlined text-primary fs-5">person_add</span>
+                            <div>
+                                <p class="mb-0 fw-semibold small">Nuevo aspirante registrado</p>
+                                <p class="mb-0 text-muted" style="font-size: 0.70rem;">Hace 5 min</p>
+                            </div>
+                        </a></li>
+                        <li><a class="dropdown-item d-flex gap-2 py-2" href="entrevistas.html">
+                            <span class="material-symbols-outlined text-warning fs-5">event</span>
+                            <div>
+                                <p class="mb-0 fw-semibold small">Recordatorio de entrevista</p>
+                                <p class="mb-0 text-muted" style="font-size: 0.70rem;">En 1 Hora</p>
+                            </div>
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-center text-primary fw-medium small" href="#">Ver todas</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown ms-1 pe-3 border-end">
+                    <div class="d-flex align-items-center gap-2 ps-3 border-start" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="text-end d-none d-sm-block">
+                            <p class="mb-0 fw-bold text-dark" style="font-size: 0.875rem;">Carlos Méndez</p>
+                            <p class="mb-0 text-muted" style="font-size: 0.75rem;">Admin RH</p>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuACR9INX0WzokTk36WAQdwdxknAyfz8SzZDz4BYUDfq3r3B-hJv3YQxKkxYIpY8oymb_MTOC0LCtJmJOjgvlwI2Sf8l4bWD3T4bV55l5sJzZmsnhGecyILSbNxMdza1xVEvs2GJ3e94CMdK3fuVdMwPa2YSWcztIWwg4CdJPFzCrmPn-mcH-58RCsqBkGcLkzFUnHC0VzFHRfDVWf_07Lvr_QWU0z-S5uKW0pjTrFv12H3Ylmdio7OIZ_Sgyiq9aZqH5aayDr2bxc8" class="avatar bg-light border border-2 border-white shadow-sm">
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3">
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="perfil.html"><span class="material-symbols-outlined fs-6 text-muted">person</span> Mi Perfil</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="ajustes.html"><span class="material-symbols-outlined fs-6 text-muted">settings</span> Ajustes</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                    </ul>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- Dynamic Content -->
+        <div class="flex-grow-1 overflow-auto p-4 p-md-5">
+            <div class="d-flex align-items-end justify-content-between mb-5">
+                <div>
+                    <p class="text-muted small mb-1">Bienvenido de nuevo, aquí tienes tu resumen hoy</p>
+                    <h3 class="fw-bold mb-0 text-dark">Viernes, 25 Octubre</h3>
+                </div>
+                <button class="btn btn-primary d-flex align-items-center gap-2 px-4 py-2 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#newInterviewModal">
+                    <span class="material-symbols-outlined">add</span> Nueva Entrevista
+                </button>
+            </div>
+
+            <div class="row g-4">
+                <!-- Left Column (Calendar & Events) -->
+                <div class="col-lg-4 d-flex flex-column gap-4">
+                    <!-- Calendar -->
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <h6 class="fw-bold mb-0">Octubre 2023</h6>
+                            <div>
+                                <button class="btn btn-sm btn-light border-0 p-1"><span class="material-symbols-outlined fs-6">chevron_left</span></button>
+                                <button class="btn btn-sm btn-light border-0 p-1"><span class="material-symbols-outlined fs-6">chevron_right</span></button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid text-muted fw-bold small mb-2">
+                            <div>D</div><div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div>
+                        </div>
+                        <div class="calendar-grid text-secondary">
+                            <div class="calendar-day text-black-50">29</div>
+                            <div class="calendar-day text-black-50">30</div>
+                            <div class="calendar-day">1</div><div class="calendar-day">2</div>
+                            <div class="calendar-day">3</div><div class="calendar-day">4</div>
+                            <div class="calendar-day">5</div><div class="calendar-day">6</div>
+                            <div class="calendar-day">7</div><div class="calendar-day">8</div>
+                            <div class="calendar-day">9</div><div class="calendar-day">10</div>
+                            <div class="calendar-day">11</div><div class="calendar-day">12</div>
+                            <div class="calendar-day">13</div><div class="calendar-day">14</div>
+                            <div class="calendar-day">15</div><div class="calendar-day">16</div>
+                            <div class="calendar-day">17</div><div class="calendar-day">18</div>
+                            <div class="calendar-day">19</div><div class="calendar-day">20</div>
+                            <div class="calendar-day">21</div><div class="calendar-day">22</div>
+                            <div class="calendar-day">23</div><div class="calendar-day">24</div>
+                            <div class="calendar-day bg-primary text-white fw-bold shadow-sm">25</div><div class="calendar-day">26</div>
+                            <div class="calendar-day">27</div><div class="calendar-day">28</div>
+                            <div class="calendar-day">29</div><div class="calendar-day">30</div>
+                            <div class="calendar-day">31</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Events -->
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <h6 class="fw-bold mb-4 d-flex align-items-center gap-2">
+                            <span class="p-1 bg-primary rounded-circle d-inline-block"></span>
+                            Próximos Eventos
+                        </h6>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex gap-3 align-items-center p-2 rounded hover-bg-light transition-colors cursor-pointer">
+                                <div class="bg-primary bg-opacity-10 text-primary p-2 rounded">
+                                    <span class="material-symbols-outlined">video_camera_front</span>
+                                </div>
+                                <div>
+                                    <p class="mb-0 fw-bold small">Entrevista Técnica</p>
+                                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">14:00 - 15:00</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center p-2 rounded hover-bg-light transition-colors cursor-pointer">
+                                <div class="bg-warning bg-opacity-10 text-warning p-2 rounded">
+                                    <span class="material-symbols-outlined">psychology</span>
+                                </div>
+                                <div>
+                                    <p class="mb-0 fw-bold small">Pruebas Psicotécnicas</p>
+                                    <p class="mb-0 text-muted" style="font-size: 0.75rem;">16:30 - 17:30</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Interviews List) -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                        <div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center">
+                            <h6 class="fw-bold mb-0">Listado de Entrevistas</h6>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-secondary active">Hoy</button>
+                                <button class="btn btn-sm btn-outline-secondary">Mañana</button>
+                                <button class="btn btn-sm btn-outline-secondary">Semana</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light text-muted small text-uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 border-0">Aspirante</th>
+                                        <th class="px-4 py-3 border-0">Horario</th>
+                                        <th class="px-4 py-3 border-0">Reclutador</th>
+                                        <th class="px-4 py-3 border-0">Proceso</th>
+                                        <th class="px-4 py-3 border-0">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="cursor: pointer;">
+                                        <td class="px-4 py-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ-ydhZ0JwTThzhO0J89mo-fl4yPTXPu_r65oWT2lKbpYEILOVSWn3wAcbmBbe6YvJolnC3ULsE4x2CmzVXTVwM4i8u1WE9dGjRnFEWrJ0AMtkHWeuws0W25HSrjv-JEEj2lGJD0cYfk8ZmyIyGHVUBW0sFCfG4VvgcbzouQ7F1tUBEqa_JvvsxHcYrRBIBxgdIcNR8IkQKoBzc3Op3-XbmH6wwqrKDdQRJipaELqstbXtXAcF7Yu4-3IADz8TCYZgtOoODSIwxzM" class="avatar-sm">
+                                                <div>
+                                                    <p class="mb-0 fw-bold text-dark fs-6">Carlos Ruiz</p>
+                                                    <p class="mb-0 text-muted" style="font-size: 0.70rem;">Ingeniero Frontend</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="mb-0 fw-semibold text-dark small">09:00 AM</p>
+                                            <p class="mb-0 text-muted" style="font-size: 0.70rem;">25 Oct, 2023</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="material-symbols-outlined fs-6 text-muted">person</span>
+                                                <span class="small">Ana María S.</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="badge bg-light text-secondary border px-2 py-1 text-truncate" style="max-width: 120px;">Dev Senior React</span>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-3 py-1">Programada</span>
+                                        </td>
+                                    </tr>
+                                    <tr style="cursor: pointer;">
+                                        <td class="px-4 py-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7XAAGNtc14dYd2cG0IRoAoXYC_Z7GiyCGvyRY04nb67KWuJEuhE0HtypRvwrssQVeXJY8Eg91UNIj3cPgWITnSjFaze3Ah5RRYn1iZIoUxcbkaFZ3daDJ5oZuLrSJQg_fl1veN-z98uN3tmf1sGjamFTcxHNg5adz63miKtmL7fv9bJnVi-XWu-HGI3z5H-jBJytnv194-wjpCF4DZ7B8FTp43leYIrneZbkKBp9HldwTZ-E2lnd9UoB77XImVsnAdMcf_lIK2L0" class="avatar-sm">
+                                                <div>
+                                                    <p class="mb-0 fw-bold text-dark fs-6">Laura Mendez</p>
+                                                    <p class="mb-0 text-muted" style="font-size: 0.70rem;">UX Designer</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="mb-0 fw-semibold text-dark small">11:30 AM</p>
+                                            <p class="mb-0 text-muted" style="font-size: 0.70rem;">25 Oct, 2023</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="material-symbols-outlined fs-6 text-muted">person</span>
+                                                <span class="small">Roberto P.</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="badge bg-light text-secondary border px-2 py-1 text-truncate" style="max-width: 120px;">Lead Design Ops</span>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1">Completada</span>
+                                        </td>
+                                    </tr>
+                                    <tr style="cursor: pointer;">
+                                        <td class="px-4 py-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS110pdqHpiLmXptE6zUneFw2TPdwCFrjSdfxs7KPNmMNc8e6N3y7tOyR1Cl5lYKiG99aybKLL1P_vAU186gBUuwE2cVoAMMZ6e0fufGjdKI20UhXmztNi1TNBc_X-hyKhYNty_ocGX1DRQqNL8Q6iQifknAn3WbpFVKGorzjVrYnBF1t_1EkeI0tIbyz_89U1UEnM6DuvoqN9f6rr1cFQ5APMoMR8A4W_g_hT7J9KDWGw1tvil8BCH1PW-a2Y22gfygLvkj6M5fw" class="avatar-sm">
+                                                <div>
+                                                    <p class="mb-0 fw-bold text-dark fs-6">Santiago Gil</p>
+                                                    <p class="mb-0 text-muted" style="font-size: 0.70rem;">Backend Dev</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <p class="mb-0 fw-semibold text-dark small">02:15 PM</p>
+                                            <p class="mb-0 text-muted" style="font-size: 0.70rem;">25 Oct, 2023</p>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="material-symbols-outlined fs-6 text-muted">person</span>
+                                                <span class="small">Ana María S.</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="badge bg-light text-secondary border px-2 py-1 text-truncate" style="max-width: 120px;">Python Architect</span>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-1">En Curso</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="newInterviewModal" tabindex="-1" aria-labelledby="newInterviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header border-0 pb-0">
+        <div>
+            <h5 class="modal-title fw-bold" id="newInterviewModalLabel">Programar Entrevista</h5>
+            <p class="small text-muted mb-0">Complete los datos de la nueva sesión</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form class="row g-3">
+            <div class="col-12">
+                <label class="form-label fw-bold small text-muted text-uppercase">Proceso de Selección Activo <span class="text-danger">*</span></label>
+                <select class="form-select bg-light py-2" required>
+                    <option value="" selected>Seleccione un proceso...</option>
+                    <option value="1">Desarrollador Senior Frontend - ID #102</option>
+                    <option value="2">Product Designer Lead - ID #105</option>
+                    <option value="3">Especialista QA - ID #108</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <label class="form-label fw-bold small text-muted text-uppercase">Fecha</label>
+                <input type="date" class="form-control bg-light py-2">
+            </div>
+            <div class="col-6">
+                <label class="form-label fw-bold small text-muted text-uppercase">Hora</label>
+                <input type="time" class="form-control bg-light py-2">
+            </div>
+            <div class="col-12">
+                <label class="form-label fw-bold small text-muted text-uppercase">Reclutador Responsable</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"><span class="material-symbols-outlined text-muted fs-6">person_search</span></span>
+                    <input type="text" class="form-control bg-light border-start-0 ps-0" placeholder="Buscar reclutador por nombre...">
+                </div>
+            </div>
+            <div class="col-12">
+                <label class="form-label fw-bold small text-muted text-uppercase">Notas y Observaciones</label>
+                <textarea class="form-control bg-light" rows="3" placeholder="Añada detalles relevantes para la entrevista..."></textarea>
+            </div>
+            <div class="col-12 d-flex gap-2 justify-content-end mt-4">
+                <button type="button" class="btn btn-light border px-4 w-50" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary px-4 fw-bold w-50">Guardar Sesión</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
